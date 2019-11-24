@@ -1,11 +1,11 @@
-﻿var suma=0,resta,multipli,division,opcion,numero,aux,aux2,sw=0,sw3=0,sw4=0,sw5=0;
+var suma=0,resta,multipli,division,opcion,numero,aux,aux2,sw=0,sw3=0,sw4=0,sw5=0,point=0;
 var Calculadora = {
     Init: function(){ //esta función capta cada número o las teclas de las operaciones que se presionó
            Calculadora.Reducir("0");
            var teclarcero = document.getElementById("0");
            teclarcero.addEventListener("click" , function(){
                     numero=parseInt(teclarcero.id);
-                    display.innerHTML = numero;
+                    Calculadora.Agregar();
            });
           Calculadora.Reducir("1");
           var teclaruno = document.getElementById("1");
@@ -64,17 +64,10 @@ var Calculadora = {
           Calculadora.Reducir("punto");
           var teclarpunto = document.getElementById("punto");
           teclarpunto.addEventListener("click" , function(){
-                     if(display.innerHTML==0){
-                        if(sw5==1){display.innerHTML = display.innerHTML;}// este switche evita ingresar mas de dos puntos cuando el primer nro es cero
-                        else  { display.innerHTML = display.innerHTML + ".";sw5=1;}
-                     }
-                     else {
-                            if(sw4==0) // este swiche también controla no ingresar mas de un punto cuando son números desde el principio
-                            {
-                               display.innerHTML = display.innerHTML + ".";sw4=1;
-                            }
-                            else {display.innerHTML = display.innerHTML;}
-                          }
+          if(point==0){
+                          display.innerHTML = display.innerHTML + ".";point=1;
+                      }
+                      numero2=display.innerHTML;
 
           });
    },
@@ -82,93 +75,89 @@ var Calculadora = {
                 Calculadora.Reducir("mas");
                 var teclamas = document.getElementById("mas");
                 teclamas.addEventListener("click" , function(){
-                      display.innerHTML="";
-                      opcion =1;aux2=numero; // aux2 primer numero ingresado de cualquiera que se oprima, igual para todos
+                      display.innerHTML="";point=0;
+                      opcion =1;aux2=Number(numero2); // aux2 primer numero ingresado de cualquiera que se oprima, igual para todos
                 });
    },
    Resta:function(){
           Calculadora.Reducir("menos");
           var teclamenos = document.getElementById("menos");
           teclamenos.addEventListener("click" , function(){
-              display.innerHTML="";
-              opcion =2;aux2=numero;
+              display.innerHTML="";point=0;
+              opcion =2;aux2=Number(numero2);
           });
     },
     Multi:function(){
            Calculadora.Reducir("por");
            var teclamenos = document.getElementById("por");
            teclamenos.addEventListener("click" , function(){
-               display.innerHTML="";
-               opcion =3;aux2=numero;
+               display.innerHTML="";point=0;
+               opcion =3;aux2=Number(numero2);
            });
      },
      Division:function(){
             Calculadora.Reducir("dividido");
             var teclamenos = document.getElementById("dividido");
             teclamenos.addEventListener("click" , function(){
-                display.innerHTML="";
-                opcion =4;aux2=numero;
+                display.innerHTML="";point=0;
+                opcion =4;aux2=Number(numero2);
             });
       },
     Igual:function(){
            Calculadora.Reducir("igual");
            var teclaigual = document.getElementById("igual");
            teclaigual.addEventListener("click" , function(){
-             aux = numero; // segundo numero ingresado
-            Calculadora.Operaciones(opcion)
+           aux = Number(numero2); // segundo numero ingresado
+           Calculadora.Operaciones(opcion)
            });
      },
      Borrar:function(){ // esta funcion inicializa todas las variables con la tecla on/c
-           Calculadora.Reducir("on");
+            Calculadora.Reducir("on");
             var teclaigual = document.getElementById("on");
             teclaigual.addEventListener("click" , function(){
-                display.innerHTML ="0"; sw=0,sw4=0,sw5=0,sw3=0;
-                suma=0;aux=0;aux2=0;
+            display.innerHTML ="0"; sw=0,sw4=0,sw5=0,sw3=0;
+            suma=0;aux=0;aux2=0;point=0;
             });
       },
       Signo_masomenos:function(){
              Calculadora.Reducir("sign");
              var teclasign = document.getElementById("sign");
              teclasign.addEventListener("click" , function(){
+             point==0
              if(display.innerHTML!=0){
                 if(sw3==0) // este swithe permite agregar el signo menos en pantalla
-                   {display.innerHTML = "-" + display.innerHTML;sw3=1;}
+                   {display.innerHTML = "-" + display.innerHTML;sw3=1;numero2=Number(display.innerHTML);}
                 else{display.innerHTML = parseInt(display.innerHTML)*(-1);} // cuando se agrega otro signo menos el numero se convierte en positivo
              }
              });
        },
       Agregar:function(){
-                   if (sw==0){ //este swiche controla que el cero se limpie cuando se escriben los numeros
-                      if(sw5==1){display.innerHTML = display.innerHTML + numero;sw4=1;}
-                      else {
-                      display.innerHTML="";
-                      display.innerHTML = display.innerHTML + numero;sw=1;}
-                   }
-                   else {
-                         if (display.innerHTML.length==8){// verifica que solo sean ocho digitos
-                            display.innerHTML = display.innerHTML;
-                        }
-                        else {display.innerHTML = display.innerHTML + numero;}
+               if (display.innerHTML.length==8){
+                   display.innerHTML = display.innerHTML
                }
-
+               else
+                    if(display.innerHTML =="0"){display.innerHTML = numero;}
+                       else {display.innerHTML = display.innerHTML + numero }
+               numero2=display.innerHTML;
        },
       Operaciones:function(opcion){
                   switch (opcion){ // para realizar las cuatro operaciones
                           case 1:
                                 suma=aux2 + aux;
-                                display.innerHTML =suma;
+                                display.innerHTML =suma;numero2=suma;
                                 break;
                          case 2:
-                               resta=aux2 - aux;
+                               resta=aux2 - aux;numero2=resta
                                display.innerHTML =resta;
                                 break;
                          case 3:
-                                multipli=aux * aux2;
-                                display.innerHTML =multipli;
+                                multipli=aux * aux2;numero2=multipli
+                                x=multipli.toString();
+                                display.innerHTML =x.substr(0,8)
                                 break;
                         default:
-                                 division=aux2 / aux;
-                                 display.innerHTML =division.toFixed(2);
+                                 division=aux2 / aux;divi=division.toFixed(2);numero2=divi
+                                 display.innerHTML =divi;
                                 break;
                 }
       },
