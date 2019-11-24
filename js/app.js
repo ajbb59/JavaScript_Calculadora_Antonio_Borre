@@ -123,7 +123,7 @@ var Calculadora = {
              Calculadora.Reducir("sign");
              var teclasign = document.getElementById("sign");
              teclasign.addEventListener("click" , function(){
-             point==0
+             point=0;
              if(display.innerHTML!=0){
                 if(sw3==0) // este swithe permite agregar el signo menos en pantalla
                    {display.innerHTML = "-" + display.innerHTML;sw3=1;numero2=Number(display.innerHTML);}
@@ -144,11 +144,17 @@ var Calculadora = {
                   switch (opcion){ // para realizar las cuatro operaciones
                           case 1:
                                 suma=aux2 + aux;
-                                display.innerHTML =suma;numero2=suma;
+                                y=suma.toString();
+                                z=y.substr(0,8);
+                                numero2=Number(z);
+                                display.innerHTML =y.substr(0,8);                                
                                 break;
                          case 2:
-                               resta=aux2 - aux;numero2=resta
-                               display.innerHTML =resta;
+                               resta=aux2 - aux;
+                               y=resta.toString();
+                               z=y.substr(0,8);
+                               numero2=Number(z);
+                               display.innerHTML =y.substr(0,8);
                                 break;
                          case 3:
                                 multipli=aux * aux2;numero2=multipli
